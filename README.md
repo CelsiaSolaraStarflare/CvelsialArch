@@ -14,58 +14,6 @@ This project implements multiple neural network architectures to predict GPS coo
 - Includes diverse terrain types: urban, water, forest, grassland, mountain, beach
 - EXIF metadata with precise GPS coordinates for training
 
-## Model Architectures
-
-### 1. High-End GPS Model (`main2_high_improved.py`)
-- **Parameters**: 29.5 million
-- **Architecture**: EfficientNet-B0 + ResNet50 dual backbone
-- **Features**: 
-  - GPS coordinate prediction
-  - Terrain classification (6 classes)
-  - Geographic consistency validation
-  - Confidence estimation
-- **Use case**: High accuracy predictions with detailed terrain analysis
-
-### 2. Ultra GPS Model (`main2_ultra.py`)
-- **Parameters**: 16.6 million  
-- **Architecture**: EfficientNet-B0 + ResNet18 dual backbone
-- **Features**:
-  - GPS coordinate prediction
-  - Indoor/outdoor classification
-  - Landscape type classification (6 classes)
-  - Indoor scene classification (8 classes)
-  - Object detection (10 classes)
-  - Real-time geographic validation via OpenStreetMap API
-  - Adaptive sampling system
-- **Use case**: Comprehensive scene understanding with multi-task learning
-
-### 3. Other Variants
-- `main2_accurate.py`: Accuracy-focused model
-- `main2_fixed.py`: Bug-fixed baseline
-- `streamlit_app.py`: Interactive web interface
-
-## Key Features
-
-- **Multi-modal Learning**: Combines visual features with geographic reasoning
-- **Terrain-aware Predictions**: Models understand landscape types and geographic constraints
-- **Confidence Estimation**: Provides uncertainty estimates for predictions
-- **Interactive Visualization**: Folium-based map visualization of predictions
-- **Geographic Validation**: Real-time validation against OpenStreetMap data
-
-## Training Process
-
-1. **Data Preprocessing**: Images resized to 256x256, normalized for ImageNet
-2. **Augmentation**: Random crops, flips, rotation, color jittering
-3. **Loss Function**: Custom geographic loss combining:
-   - Coordinate distance error
-   - Terrain classification loss
-   - Geographic consistency penalties
-   - Confidence calibration
-   - Diversity enforcement
-
-4. **Optimization**: AdamW with different learning rates for pretrained vs. new layers
-5. **Validation**: 85/15 train/validation split with early stopping
-
 ## Performance
 
 Models achieve meter-level accuracy on the CVL_SFBay-1.5K dataset:
@@ -132,25 +80,15 @@ requests
 tqdm
 ```
 
-## Geographic Scope
-
-Currently optimized for the San Francisco Bay Area, including:
-- San Francisco downtown and neighborhoods
-- Oakland and Berkeley
-- Marin County
-- South Bay urban areas
-- Pacific Ocean coastline
-- Bay Area mountains and forests
-
-## Future Improvements
-
-- Expand to other geographic regions
-- Incorporate temporal information (season, time of day)
-- Add elevation prediction
-- Improve water body detection
-- Optimize inference speed
-- Mobile deployment
-
 ## Contributors
 
-Trained on the CVL_SFBay-1.5K Test Split dataset for academic research purposes.
+Trained on the CVL_SFBay-1.5K Test Split dataset `Produced by Celsia Juilyn Fan` for academic research purposes.
+```
+@misc{fan2025,
+  author = {Fan Chengjui},
+  title = {CvelsialArch for Computer Vision Locators},
+  year = {2025},
+  month = {jul},
+  day = {17}
+}
+```
