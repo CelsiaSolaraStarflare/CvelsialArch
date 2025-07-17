@@ -49,7 +49,7 @@ print(f'Terrain: {terrain} (confidence: {terrain_conf:.3f})')
 
 ### Web Interface
 ```bash
-streamlit run streamlit_app.py
+streamlit run streamlit_app_high_improved.py
 ```
 
 ## File Structure
