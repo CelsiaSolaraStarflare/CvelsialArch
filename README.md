@@ -1,218 +1,156 @@
-# GPS Location, Orientation & Time Prediction from Images + Depth
+# GPS Localization from Images
 
-This project implements a deep learning system that predicts GPS coordinates, orientation, altitude, and time of day from RGB images and depth maps using neural networks.
+A deep learning project that predicts GPS coordinates from images using computer vision and geographic reasoning, trained on the CVL_SFBay-1.5K Test Split dataset.
 
-## Project Overview
+## Overview
 
-The system uses computer vision and deep learning to extract spatial and temporal information from photographs. It combines RGB image data with depth information to make predictions about:
+This project implements multiple neural network architectures to predict GPS coordinates from images, with a focus on the San Francisco Bay Area. The models combine visual feature extraction with geographic reasoning to estimate location coordinates and understand terrain/scene types.
 
-- GPS coordinates (latitude/longitude)
-- Image orientation
-- Altitude above sea level
-- Time of day when photo was taken
+## Dataset
+
+**CVL_SFBay-1.5K Test Split**
+- 1,500+ images from the San Francisco Bay Area
+- GPS coordinates: Latitude [37.301, 37.900], Longitude [-122.478, -121.902]
+- Includes diverse terrain types: urban, water, forest, grassland, mountain, beach
+- EXIF metadata with precise GPS coordinates for training
+
+## Model Architectures
+
+### 1. High-End GPS Model (`main2_high_improved.py`)
+- **Parameters**: 29.5 million
+- **Architecture**: EfficientNet-B0 + ResNet50 dual backbone
+- **Features**: 
+  - GPS coordinate prediction
+  - Terrain classification (6 classes)
+  - Geographic consistency validation
+  - Confidence estimation
+- **Use case**: High accuracy predictions with detailed terrain analysis
+
+### 2. Ultra GPS Model (`main2_ultra.py`)
+- **Parameters**: 16.6 million  
+- **Architecture**: EfficientNet-B0 + ResNet18 dual backbone
+- **Features**:
+  - GPS coordinate prediction
+  - Indoor/outdoor classification
+  - Landscape type classification (6 classes)
+  - Indoor scene classification (8 classes)
+  - Object detection (10 classes)
+  - Real-time geographic validation via OpenStreetMap API
+  - Adaptive sampling system
+- **Use case**: Comprehensive scene understanding with multi-task learning
+
+### 3. Other Variants
+- `main2_accurate.py`: Accuracy-focused model
+- `main2_fixed.py`: Bug-fixed baseline
+- `streamlit_app.py`: Interactive web interface
 
 ## Key Features
 
-- Multi-modal neural network architecture (RGB + Depth)
-- Custom Haversine distance loss for GPS coordinate prediction
-- Multi-task learning with shared feature extraction
-- Support for both RGB-only and RGB+Depth input modes
-- Comprehensive evaluation metrics and visualizations
-- Interactive inference capabilities
+- **Multi-modal Learning**: Combines visual features with geographic reasoning
+- **Terrain-aware Predictions**: Models understand landscape types and geographic constraints
+- **Confidence Estimation**: Provides uncertainty estimates for predictions
+- **Interactive Visualization**: Folium-based map visualization of predictions
+- **Geographic Validation**: Real-time validation against OpenStreetMap data
 
-## Project Structure
+## Training Process
 
-### Core Python Files:
-- `exif_extractor.py` - Extracts EXIF metadata from images including GPS coordinates
-- `depth_map_generator.py` - Generates depth maps using Depth-Anything-V2 model
-- `gps_orientation_trainer.py` - Main training script for GPS prediction models
-- `evaluate_gps_model.py` - Model evaluation and performance analysis
-- `density.py` - Additional utility functions
+1. **Data Preprocessing**: Images resized to 256x256, normalized for ImageNet
+2. **Augmentation**: Random crops, flips, rotation, color jittering
+3. **Loss Function**: Custom geographic loss combining:
+   - Coordinate distance error
+   - Terrain classification loss
+   - Geographic consistency penalties
+   - Confidence calibration
+   - Diversity enforcement
 
-### Jupyter Notebooks:
-- `GPS_Prediction_Workflow.ipynb` - Complete workflow demonstration
-- `GPS_RGB_vs_Depth_Workflow.ipynb` - Comparison between RGB and RGB+Depth models
+4. **Optimization**: AdamW with different learning rates for pretrained vs. new layers
+5. **Validation**: 85/15 train/validation split with early stopping
 
-### Data Structure:
-```
-data/
-├── images/          # Original RGB images
-├── depths/          # Generated depth maps (.png and .npy files)
-├── exif_data.json   # Extracted EXIF metadata
-└── exif_data.csv    # EXIF data in CSV format
-```
+## Performance
 
-### Model Files:
-- `best_gps_model.pth` - Main trained model
-- `best_gps_model_rgb.pth` - RGB-only model
-- `best_gps_model_depth.pth` - RGB+Depth model
-
-## Installation
-
-1. Install Python dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-2. Install Depth-Anything-V2 (for depth map generation):
-```bash
-git clone https://github.com/DepthAnything/Depth-Anything-V2.git
-# Follow their installation instructions
-```
-
-3. Download pre-trained Depth-Anything-V2 weights:
-- Place model weights in `checkpoints/` directory
-- Required: `depth_anything_v2_vits.pth`
+Models achieve meter-level accuracy on the CVL_SFBay-1.5K dataset:
+- Typical errors: 100-2000 meters depending on terrain complexity
+- Best performance on urban areas with distinct visual landmarks
+- Challenges: Water areas, dense forests, similar-looking residential areas
 
 ## Usage
 
-### 1. Extract EXIF Data from Images
+### Training
 ```bash
-python exif_extractor.py
+python main2_high_improved.py  # Train high-end model
+python main2_ultra.py          # Train ultra model
 ```
-- Place your images in `data/images/` directory
-- Extracts GPS coordinates, timestamps, orientation, and camera metadata
-- Outputs `exif_data.json` and `exif_data.csv`
 
-### 2. Generate Depth Maps
+### Inference
 ```bash
-python depth_map_generator.py
-```
-- Processes all images in `data/images/`
-- Generates depth maps in `data/depths/`
-- Creates both visualization (.png) and raw data (.npy) files
+python -c "
+from main2_high_improved import predict_improved_high_end, ImprovedHighEndGPSNet
+import torch
 
-### 3. Train GPS Prediction Models
+# Load trained model
+model = ImprovedHighEndGPSNet()
+checkpoint = torch.load('improved_high_end_gps_model.pth')
+model.load_state_dict(checkpoint['model_state_dict'])
+
+# Predict location
+lat, lon, terrain, terrain_conf, coord_conf = predict_improved_high_end(model, 'path/to/image.jpg')
+print(f'Predicted location: {lat:.6f}, {lon:.6f}')
+print(f'Terrain: {terrain} (confidence: {terrain_conf:.3f})')
+"
+```
+
+### Web Interface
 ```bash
-python gps_orientation_trainer.py
+streamlit run streamlit_app.py
 ```
-- Trains both RGB-only and RGB+Depth models
-- Uses multi-task learning for GPS, time, orientation, and altitude prediction
-- Saves best models as `.pth` files
 
-### 4. Evaluate Models
-```bash
-python evaluate_gps_model.py
+## File Structure
+
 ```
-- Loads trained models and evaluates performance
-- Generates comprehensive metrics and visualizations
-- Creates performance comparison reports
+├── main2_high_improved.py      # High-end GPS model (29.5M params)
+├── main2_ultra.py             # Ultra GPS model (16.6M params)
+├── main2_accurate.py          # Accuracy-focused variant
+├── streamlit_app.py           # Web interface
+├── data/
+│   ├── images/               # Training images
+│   ├── exif_data.json       # GPS metadata
+│   └── location_data.csv    # Location dataset
+├── *.pth                     # Trained model weights
+└── README.md                # This file
+```
 
-### 5. Interactive Workflow (Recommended)
-Open and run `GPS_Prediction_Workflow.ipynb` for a complete guided workflow with:
-- Data exploration and visualization
-- Model training with live progress monitoring
-- Performance comparison between RGB-only and RGB+Depth models
-- Interactive inference examples
+## Requirements
 
-## Model Architecture
+```
+torch
+torchvision
+PIL
+folium
+numpy
+streamlit
+requests
+tqdm
+```
 
-### Multi-Modal GPS Prediction Network:
-- **Backbone**: ResNet50 feature extractors
-  - RGB branch: 3-channel input (pretrained ImageNet weights)
-  - Depth branch: 1-channel input (adapted from RGB weights)
-- **Feature Fusion**: Concatenation of RGB and depth features
-- **Task-Specific Heads**:
-  - GPS Head: 2 outputs (latitude, longitude)
-  - Time Head: 2 outputs (hour, minute)
-  - Orientation Head: 6 classes (Normal, Rotated 90°/180°/270°, Flipped H/V)
-  - Altitude Head: 1 regression output
+## Geographic Scope
 
-### Loss Functions:
-- **GPS Loss**: Custom Haversine distance for geographic accuracy
-- **Time Loss**: Mean Squared Error on normalized time values
-- **Orientation Loss**: Cross-Entropy for classification
-- **Altitude Loss**: Mean Squared Error for regression
+Currently optimized for the San Francisco Bay Area, including:
+- San Francisco downtown and neighborhoods
+- Oakland and Berkeley
+- Marin County
+- South Bay urban areas
+- Pacific Ocean coastline
+- Bay Area mountains and forests
 
-## Dataset Requirements
+## Future Improvements
 
-### Image Requirements:
-- Format: JPEG, PNG, BMP, TIFF
-- Resolution: Any (automatically resized to 1024x1024 for training)
-- EXIF data required with GPS coordinates and timestamps
+- Expand to other geographic regions
+- Incorporate temporal information (season, time of day)
+- Add elevation prediction
+- Improve water body detection
+- Optimize inference speed
+- Mobile deployment
 
-### Minimum Dataset Size:
-- At least 20-30 images for basic functionality
-- 100+ images recommended for good performance
-- 1000+ images for production-quality results
+## Contributors
 
-## Performance Metrics
-
-The system evaluates performance using:
-- **GPS Distance Error**: Haversine distance in kilometers
-- **Time Prediction Error**: Absolute difference in minutes
-- **Orientation Accuracy**: Classification accuracy percentage
-- **Altitude Error**: Absolute difference in meters
-
-## Hardware Requirements
-
-### Minimum:
-- 8GB RAM
-- CPU-only training supported (slower)
-
-### Recommended:
-- 16GB+ RAM
-- NVIDIA GPU with 8GB+ VRAM
-- CUDA-compatible PyTorch installation
-
-## Training Configuration
-
-### Default Hyperparameters:
-- Batch Size: 4-8 (adjust based on GPU memory)
-- Learning Rate: 1e-4
-- Epochs: 30-50
-- Optimizer: AdamW with weight decay
-- Image Size: 1024x1024
-- Mixed Precision: Enabled for CUDA training
-
-## Limitations
-
-1. **Dataset Dependency**: Requires images with GPS EXIF data
-2. **Geographic Scope**: Best performance on similar geographic regions
-3. **Temporal Scope**: Time prediction accuracy depends on lighting conditions
-4. **Hardware**: GPU recommended for reasonable training times
-5. **Depth Quality**: Depth prediction quality affects RGB+Depth model performance
-
-## Potential Applications
-
-- **Geotagging**: Automatic location tagging for photos without GPS
-- **Digital Forensics**: Image provenance and location verification
-- **Surveillance**: Automated location identification from camera feeds
-- **Robotics**: Visual navigation and localization
-- **Augmented Reality**: Scene understanding and positioning
-
-## Troubleshooting
-
-### Common Issues:
-
-1. **CUDA Out of Memory**: Reduce batch size in training scripts
-2. **Missing Depth Maps**: Run `depth_map_generator.py` first
-3. **No GPS Data**: Ensure images have GPS EXIF metadata
-4. **Import Errors**: Install all requirements and check Depth-Anything-V2 setup
-
-### Performance Issues:
-- Use GPU for training (CPU training is very slow)
-- Ensure sufficient RAM for data loading
-- Consider reducing image resolution for faster training
-
-## Contributing
-
-1. Ensure all images have GPS EXIF data
-2. Test changes with small dataset first
-3. Maintain compatibility with both RGB-only and RGB+Depth modes
-4. Update documentation for any API changes
-
-## License
-
-This project is for educational and research purposes. Please respect the licenses of:
-- Depth-Anything-V2 model and weights
-- PyTorch and other dependencies
-- Any images used for training (ensure you have rights to use them)
-
-## Acknowledgments
-
-- Depth-Anything-V2 team for the depth estimation model
-- PyTorch team for the deep learning framework
-- Contributors to the various Python libraries used
-
-For questions or issues, please refer to the code comments or create an issue in the project repository.
+Trained on the CVL_SFBay-1.5K Test Split dataset for academic research purposes.
