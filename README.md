@@ -1,4 +1,4 @@
-# GPS Localization from Images
+# CvelsialArch (CVL) Computer Vision Locator
 
 A deep learning project that predicts GPS coordinates from images using computer vision and geographic reasoning, trained on the CVL_SFBay-1.5K Test Split dataset.
 
