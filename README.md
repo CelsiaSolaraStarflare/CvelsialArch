@@ -8,13 +8,12 @@ This project implements multiple neural network architectures to predict GPS coo
 
 ## Models
 ```
-CVL 1.0 - Nano (Lower than 10.0M) - Awaiting Release
+CVL 1.1 - Nano (Lower than 10.0M) - Awaiting Release
 CVL 2.0 - Base (19.0M Params) - Awaiting Release
 CVL 2.0 - High (24.4M Params) - Main2_High_Improved.py
 CVL 2.0 - Ultra (18.0M Params) - Awaiting Release
 CVL 2.0 - Global Ultra - main2_ultra.py
 CVL 3.0 - Dynamic - Awaiting Release
-CVL 3.0 - Dynamic Nano - Awaiting Release
 ```
 
 You can download the models from: `https://huggingface.co/Celsia/CvelsialArch_V1` or `git clone https://huggingface.co/Celsia/CvelsialArch_V1`
