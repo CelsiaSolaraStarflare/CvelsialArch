@@ -8,10 +8,10 @@ This project implements multiple neural network architectures to predict GPS coo
 
 ## Models
 ```
-CVL 1.0 - Nano (Lower than 100M) - Awaiting Release
-CVL 2.0 - Base (190M Params) - Awaiting Release
-CVL 2.0 - High (244M Params) - Main2_High_Improved.py
-CVL 2.0 - Ultra (180M Params) - Awaiting Release
+CVL 1.0 - Nano (Lower than 10.0M) - Awaiting Release
+CVL 2.0 - Base (19.0M Params) - Awaiting Release
+CVL 2.0 - High (24.4M Params) - Main2_High_Improved.py
+CVL 2.0 - Ultra (18.0M Params) - Awaiting Release
 CVL 2.0 - Global Ultra - main2_ultra.py
 CVL 3.0 - Dynamic - Awaiting Release
 CVL 3.0 - Dynamic Nano - Awaiting Release
@@ -75,8 +75,7 @@ streamlit run streamlit_app_high_improved.py
 ```
 ├── main2_high_improved.py      # High-end GPS model (29.5M params)
 ├── main2_ultra.py             # Ultra GPS model (16.6M params)
-├── main2_accurate.py          # Accuracy-focused variant
-├── streamlit_app.py           # Web interface
+├── streamlit_app_[version of the booter eg. high_improved].py           # Web interface
 ├── data/
 │   ├── images/               # Training images
 │   ├── exif_data.json       # GPS metadata
