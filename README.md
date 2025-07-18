@@ -99,13 +99,15 @@ tqdm
 
 ## Contributors
 
-Trained on the CVL_SFBay-1.5K Test Split dataset `Produced by Celsia Juilyn Fan` for academic research purposes.
+Trained on the CVL_SFBay-1.5K Test Split dataset, produced by Celsia Juilyn Fan for academic research purposes.
+
 $$
 @misc{fan2025,
-  author = {Fan Chengjui},
+  author = {Fan, Celsia Juilyn},
   title = {CvelsialArch for Computer Vision Locators},
   year = {2025},
-  month = {jul},
+  month = {Jul},
   day = {17}
 }
 $$
+
