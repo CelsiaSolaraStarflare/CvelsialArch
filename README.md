@@ -34,6 +34,8 @@ Models achieve meter-level accuracy on the CVL_SFBay-1.5K dataset:
 
 ## Usage
 
+Setup with `pip install -r r.txt`
+
 ### Pretraining
 If you have photos taken on any mobile device that contains EXIF you may do this:
 ```
