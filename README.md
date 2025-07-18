@@ -100,7 +100,7 @@ tqdm
 ## Contributors
 
 Trained on the CVL_SFBay-1.5K Test Split dataset `Produced by Celsia Juilyn Fan` for academic research purposes.
-```
+$$
 @misc{fan2025,
   author = {Fan Chengjui},
   title = {CvelsialArch for Computer Vision Locators},
@@ -108,4 +108,4 @@ Trained on the CVL_SFBay-1.5K Test Split dataset `Produced by Celsia Juilyn Fan`
   month = {jul},
   day = {17}
 }
-```
+$$
