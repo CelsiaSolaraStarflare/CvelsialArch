@@ -33,6 +33,12 @@ Models achieve meter-level accuracy on the CVL_SFBay-1.5K dataset:
 
 ## Usage
 
+### Pretraining
+If you have photos taken on any mobile device that contains EXIF you may do this:
+```
+python exif_extract.py
+```
+This code will automatically save the files to `data/exif_data.json` so that we can use it later for computations.
 ### Training
 ```bash
 python main2_high_improved.py  # Train high-end model
