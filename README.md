@@ -11,7 +11,8 @@ This project implements multiple neural network architectures to predict GPS coo
 CVL 1.0 - Nano (Lower than 100M) - Awaiting Release
 CVL 2.0 - Base (190M Params) - Awaiting Release
 CVL 2.0 - High (244M Params) - Main2_High_Improved.py
-CVL 2.0 - Ultra (180M Params) - Main2_Ultra.py
+CVL 2.0 - Ultra (180M Params) - Awaiting Release
+CVL 2.0 - Global Ultra - main2_ultra.py
 CVL 3.0 - Dynamic - Awaiting Release
 CVL 3.0 - Dynamic Nano - Awaiting Release
 ```
