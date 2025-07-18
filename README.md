@@ -17,6 +17,8 @@ CVL 3.0 - Dynamic - Awaiting Release
 CVL 3.0 - Dynamic Nano - Awaiting Release
 ```
 
+You can download the models from: `https://huggingface.co/Celsia/CvelsialArch_V1`
+
 ## Dataset
 
 **CVL_SFBay-1.5K Test Split**
