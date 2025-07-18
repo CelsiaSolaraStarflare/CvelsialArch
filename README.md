@@ -110,4 +110,12 @@ $$
   day = {17}
 }
 $$
-
+```
+@misc{fan2025,
+  author = {Fan, Celsia Juilyn},
+  title = {CvelsialArch for Computer Vision Locators},
+  year = {2025},
+  month = {Jul},
+  day = {17}
+}
+```
