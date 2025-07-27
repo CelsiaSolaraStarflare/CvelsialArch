@@ -6,7 +6,7 @@ A deep learning project that predicts GPS coordinates from images using computer
 
 This project implements multiple neural network architectures to predict GPS coordinates from images, with a focus on the San Francisco Bay Area. The models combine visual feature extraction with geographic reasoning to estimate location coordinates and understand terrain/scene types.
 
-## Models
+## Models (v[#-] means Variant [#-])
 ```
 CVL 1.1 - Nano (Lower than 10.0M) - Awaiting Release
 CVL 2.0 - Base (19.0M Params) - Awaiting Release
