@@ -103,21 +103,14 @@ tqdm
 
 Trained on the CVL_SFBay-1.5K Test Split dataset, produced by Celsia Juilyn Fan for academic research purposes.
 
-$$
-@misc{fan2025,
-  author = {Fan, Celsia Juilyn},
-  title = {CvelsialArch for Computer Vision Locators},
-  year = {2025},
-  month = {Jul},
-  day = {17}
-}
-$$
+
 ```
 @misc{fan2025,
-  author = {Fan, Celsia Juilyn},
+  author = {Fan, Cheng-Jui},
   title = {CvelsialArch for Computer Vision Locators},
   year = {2025},
   month = {Jul},
   day = {17}
 }
 ```
+
