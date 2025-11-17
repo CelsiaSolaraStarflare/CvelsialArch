@@ -1,4 +1,4 @@
-# CvelsialArch (CVL) Computer Vision Locator
+# CvelsialArch (CVL) Computer Vision Locator 1
 
 A deep learning project that predicts GPS coordinates from images using computer vision and geographic reasoning, trained on the CVL_SFBay-1.5K Test Split dataset.
 The contents within this repo are still WIP. You can wait for the main publication version which is coordinated for May of 2026 to November.
@@ -114,5 +114,6 @@ Trained on the CVL_SFBay-1.5K Test Split dataset, produced by Celsia Juilyn Fan 
   day = {17}
 }
 ```
+
 
 
